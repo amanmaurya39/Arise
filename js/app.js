@@ -192,15 +192,24 @@ function init3DTiltEffects() {
 }
 
 /**
- * Sticky Navbar Elevation
+ * Sticky Navbar & Header Elevation & Scroll Progress
  */
 function initNavbarScroll() {
   const header = document.querySelector('.site-header');
+  const progressBar = document.getElementById('scroll-progress');
+
   window.addEventListener('scroll', () => {
     if (window.scrollY > 40) {
       header.classList.add('scrolled');
     } else {
       header.classList.remove('scrolled');
+    }
+
+    if (progressBar) {
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      progressBar.style.width = scrolled + '%';
     }
   });
 }
@@ -226,6 +235,12 @@ function initMobileDrawer() {
     overlay.classList.remove('active');
     document.body.style.overflow = '';
   }
+
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 1150) {
+      closeDrawer();
+    }
+  });
 
   if (mobileToggle) mobileToggle.addEventListener('click', openDrawer);
   if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
